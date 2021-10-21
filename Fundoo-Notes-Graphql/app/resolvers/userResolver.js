@@ -17,6 +17,13 @@ const resolvers = {
             return user
         },
 
+        loginUser : async ( parent, args, context, info ) => {
+            const login = {
+                email : args.email,
+                password : args.password
+            }
+        }
+
     }
 };
 

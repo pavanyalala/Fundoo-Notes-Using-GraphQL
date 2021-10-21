@@ -9,12 +9,22 @@ type User{
     password : String!
 }
 
+type LoginUser{
+    email : String!
+    password : String!
+}
+
 
 input UserInput{
     firstName : String!
     lastName : String!
     email : String!
     password : String!
+}
+
+input LoginInput{
+    email:String
+    password:String
 }
 
 
@@ -24,6 +34,7 @@ type Query{
 
 type Mutation {
     registerUser( user : UserInput ):User
+    loginUser( args : LoginInput ):LoginUser
 }
 `;
 

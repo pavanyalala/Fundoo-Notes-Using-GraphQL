@@ -3,7 +3,7 @@ const { ApolloServer, gql} = require('apollo-server-express');
 
 const typeDefs = require('./app/typeDefs/userSchema');
 const resolvers = require('./app/resolvers/userResolver');
-const dbconfig = require('./app/config/db.config')
+const dbconfig = require('./config/db.config')
 
 dbconfig.dbConnection();
 
