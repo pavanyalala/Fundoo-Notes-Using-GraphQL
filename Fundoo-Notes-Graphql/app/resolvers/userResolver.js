@@ -4,6 +4,7 @@ const bcryptpass = require('../utilities/bcrypt')
 
 const Apollerror = require('apollo-server-errors')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 
 
 const resolvers = {
@@ -48,10 +49,36 @@ const resolvers = {
             return user;
  
         },
+        loginUser : async(_,{path})=>{
+            const login ={
+                email:path.email,
+                password:path.password
+            }
+            const Validationlogin = joiValidation.authLogin.validate(login);
+            if(Validationlogin.error){
+                return new Apollerror.ValidationError(Validationlogin.error)
+            }
+            const userPresent = await UserData.findOne({ email: path.email });
+            if (!userPresent) {
+              return new Apollerror.AuthenticationError('Eamil ID is not registered');
+            }
+            const correct = await  bcrypt.compare(path.password, userPresent.password);
+            if (! correct) {
+              return new Apollerror.AuthenticationError('wrong password' );
+            }
+            const token =jwt.sign({  email:path.email  },"My_secrete Key",{
+                expiresIn:'5min'
+            })
+            return{ userId:userPresent.id,
+                    firstName:userPresent.firstName,
+                    lastName:userPresent.lastName,
+                    token:token,
+                    tokenExpiration:5000
+                  }
 
+        },
         
     }
-
 };
 
 module.exports = resolvers;
