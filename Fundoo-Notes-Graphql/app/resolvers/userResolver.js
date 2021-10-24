@@ -1,30 +1,57 @@
-const Post = require('../models/user.model')
+const UserData = require('../models/user.model')
+const joiValidation = require('../utilities/validation')
+const bcryptpass = require('../utilities/bcrypt')
+
+const Apollerror = require('apollo-server-errors')
+const bcrypt = require('bcrypt')
+
 
 const resolvers = {
     Query : {
 
         getAllUsers : async () => {
-            return await Post.find() 
+            return await UserData.find() 
 
         },
     },
+    Mutation:{
 
-    Mutation: {
-        registerUser : async ( parent, args, context, info ) => {
-            const { firstName, lastName, email, password } = args.user
-            const user = new Post({ firstName, lastName, email, password})
-            await user.save()
-            return user
+        // creating new user
+
+        registerUser : async (_,{path}) => {
+          const user = new UserData({
+              firstName : path.firstName,
+              lastName  : path.lastName,
+              email     : path.email,
+              password  : path.password,
+            })
+
+            const Validation = joiValidation.authRegister.validate(user._doc);
+            if(Validation.error){
+                return new Apollerror.ValidationError(Validation.error)
+            }
+
+            const existinguser = await UserData.findOne({ email:path.email})
+            if(existinguser){
+                 return new Apollerror.UserInputError("Email already exists")
+            }
+
+            bcryptpass.hash(path.password, (error,data)=>{
+                if(data){
+                    user.password = data
+                    console.log(data)
+                }else{
+                    throw error;
+                }
+                user.save();
+            })
+            return user;
+ 
         },
 
-        loginUser : async ( parent, args, context, info ) => {
-            const login = {
-                email : args.email,
-                password : args.password
-            }
-        }
-
+        
     }
+
 };
 
 module.exports = resolvers;
