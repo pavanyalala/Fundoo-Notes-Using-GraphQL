@@ -66,7 +66,7 @@ const resolvers = {
             if (! correct) {
               return new Apollerror.AuthenticationError('wrong password' );
             }
-            const token =jwt.sign({  email:path.email  },"My_secrete Key",{
+            const token =jwt.sign({  email:path.email  },process.env.accessToken,{
                 expiresIn:'5min'
             })
             return{ userId:userPresent.id,

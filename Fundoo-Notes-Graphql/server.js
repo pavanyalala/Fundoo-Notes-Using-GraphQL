@@ -5,6 +5,8 @@ const typeDefs = require('./app/typeDefs/userSchema');
 const resolvers = require('./app/resolvers/userResolver');
 const dbconfig = require('./config/db.config')
 
+require('dotenv').config();
+
 dbconfig.dbConnection();
 
 async function startServer(){
