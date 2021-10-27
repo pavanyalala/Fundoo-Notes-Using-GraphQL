@@ -23,6 +23,12 @@ type Forgot{
     message : String
 },
 
+type Reset{
+    email       :String!
+    message     :String
+    newPassword :String
+},
+
 input UserInput{
     firstName : String!
     lastName  : String
@@ -39,6 +45,12 @@ input ForgotPassword{
     email : String!
 },
 
+input ResetPassword{
+    email        : String!
+    Code         : String
+    newPassword  : String
+}
+
 type Query{
     getAllUsers : [User] 
 },
@@ -47,6 +59,7 @@ type Mutation {
     registerUser( path : UserInput ):User
     loginUser(path : LoginInput):AuthUser
     forgotPassword(path : ForgotPassword):Forgot
+    resetPassword(path : ResetPassword):Reset
 }
 `;
 

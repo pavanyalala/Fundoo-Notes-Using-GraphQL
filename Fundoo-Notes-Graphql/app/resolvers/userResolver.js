@@ -72,7 +72,7 @@ const resolvers = {
                     firstName:userPresent.firstName,
                     lastName:userPresent.lastName,
                     token:token,
-                    tokenExpiration:50000
+                    tokenExpiration:5000
                   }
 
         },
@@ -91,6 +91,30 @@ const resolvers = {
             return ({
                 email:path.email,
                 message:'secret code is sent to your register mail id'
+            })
+        },
+
+        resetPassword : async(_,{path}) => {
+            const checkingUser = await UserData.findOne({email : path.email})
+            if(! checkingUser){
+                return new Apollerror.ApolloError.AuthenticationError('Email not registered')
+            }
+            const checkCode = SendByMail.passCode(path.code)
+            if(checkCode === 'false'){
+                return new Apollerror.AuthenticationError('code not valid')
+            }
+            bcryptpass.hash(path.newPassword, (error,data) => {
+                if(data){
+                    checkingUser.password = data;
+                    checkingUser.save();
+                }else{
+                    return 'error'
+                }
+            })
+            return({
+                email : path.email,
+                newPassword : path.newPassword,
+                message :'new password is updated'
             })
         }
     }   

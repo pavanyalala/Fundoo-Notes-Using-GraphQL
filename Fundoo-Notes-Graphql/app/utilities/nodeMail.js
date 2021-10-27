@@ -1,9 +1,10 @@
 const nodemailer = require('nodemailer')
 
+var code = null;
 class SendByMail { 
     getMessageByMail =  () => {
 
-        let code = (Math.random().toString(36).substring(5));
+         code = (Math.random().toString(36).substring(5));
 
         const transporter = nodemailer.createTransport({
             service : 'gmail',
