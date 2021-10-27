@@ -1,6 +1,7 @@
 const UserData = require('../models/user.model')
 const joiValidation = require('../utilities/validation')
 const bcryptpass = require('../utilities/bcrypt')
+const SendByMail = require('../utilities/nodeMail')
 
 const Apollerror = require('apollo-server-errors')
 const bcrypt = require('bcrypt')
@@ -16,8 +17,6 @@ const resolvers = {
         },
     },
     Mutation:{
-
-        // creating new user
 
         registerUser : async (_,{path}) => {
           const user = new UserData({
@@ -67,18 +66,35 @@ const resolvers = {
               return new Apollerror.AuthenticationError('wrong password' );
             }
             const token =jwt.sign({  email:path.email  },process.env.accessToken,{
-                expiresIn:'5min'
+                expiresIn:'5mins'
             })
             return{ userId:userPresent.id,
                     firstName:userPresent.firstName,
                     lastName:userPresent.lastName,
                     token:token,
-                    tokenExpiration:5000
+                    tokenExpiration:50000
                   }
 
         },
-        
-    }
+
+        forgotPassword : async(_,{path}) => {
+            const checkUser = await UserData.findOne({email : path.email});
+            if( ! checkUser){
+                return new Apollerror.AuthenticationError('Email not registered')
+            }
+
+            SendByMail.getMessageByMail(checkUser.email,(data) => {
+                if(!data){
+                    return new Apollerror.ApolloError('otp sending is failed')
+                }
+            })
+            return ({
+                email:path.email,
+                message:'secret code is sent to your register mail id'
+            })
+        }
+    }   
+
 };
 
 module.exports = resolvers;

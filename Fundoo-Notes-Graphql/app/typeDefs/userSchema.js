@@ -18,6 +18,11 @@ type AuthUser{
     tokenExpiration : Int!
 },
 
+type Forgot{
+    email   : String!
+    message : String
+},
+
 input UserInput{
     firstName : String!
     lastName  : String
@@ -30,6 +35,10 @@ input LoginInput{
     password : String
 },
 
+input ForgotPassword{
+    email : String!
+},
+
 type Query{
     getAllUsers : [User] 
 },
@@ -37,6 +46,7 @@ type Query{
 type Mutation {
     registerUser( path : UserInput ):User
     loginUser(path : LoginInput):AuthUser
+    forgotPassword(path : ForgotPassword):Forgot
 }
 `;
 
