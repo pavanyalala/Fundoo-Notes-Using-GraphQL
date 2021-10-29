@@ -25,7 +25,6 @@ type Forgot{
 
 type Reset{
     email       :String!
-    message     :String
     newPassword :String
 },
 

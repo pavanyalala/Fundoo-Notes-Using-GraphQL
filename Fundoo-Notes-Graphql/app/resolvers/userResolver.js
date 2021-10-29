@@ -2,10 +2,12 @@ const UserData = require('../models/user.model')
 const joiValidation = require('../utilities/validation')
 const bcryptpass = require('../utilities/bcrypt')
 const SendByMail = require('../utilities/nodeMail')
+const mailModel = require('../models/mail.model')
 
 const Apollerror = require('apollo-server-errors')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+
 
 
 const resolvers = {
@@ -77,47 +79,54 @@ const resolvers = {
 
         },
 
-        forgotPassword : async(_,{path}) => {
-            const checkUser = await UserData.findOne({email : path.email});
-            if( ! checkUser){
-                return new Apollerror.AuthenticationError('Email not registered')
-            }
-
-            SendByMail.getMessageByMail(checkUser.email,(data) => {
-                if(!data){
-                    return new Apollerror.ApolloError('otp sending is failed')
+        forgotPassword: async (_, { path }) => {
+              const userPresent = await UserData.findOne({ email: path.email });
+              if (!userPresent) {
+                return new Apollerror.AuthenticationError('User is not Registered');
+              }
+              const check = await mailModel.find({ mail: path.email })
+              if (check.length != 0) {
+                return new Apollerror.UserInputError('Mail code already sent');
+              }
+              SendByMail.getMessageByMail(userPresent.email, (data) => {
+                if (!data) {
+                  return new Apollerror.ApolloError('Failed to send Email');
                 }
-            })
-            return ({
-                email:path.email,
-                message:'secret code is sent to your register mail id'
-            })
+              });
+              return ({
+                email: userPresent.email,
+              });
         },
 
-        resetPassword : async(_,{path}) => {
-            const checkingUser = await UserData.findOne({email : path.email})
-            if(! checkingUser){
-                return new Apollerror.ApolloError.AuthenticationError('Email not registered')
+        resetPassword : async(_,{ path },context) => {
+
+            const userPresent = await mailModel.find({ mail: context.email });
+            if (userPresent.length === 0) {
+              return new Apollerror.UserInputError('Mailcode expired');
             }
-            const checkCode = SendByMail.passCode(path.code)
-            if(checkCode === 'false'){
-                return new Apollerror.AuthenticationError('code not valid')
+
+            const checkCode = SendByMail.sendCode(path.Code, userPresent);
+            if (checkCode === 'false'){
+                return new Apollerror.AuthenticationError('Invalid mailcode');
             }
-            bcryptpass.hash(path.newPassword, (error,data) => {
-                if(data){
-                    checkingUser.password = data;
-                    checkingUser.save();
-                }else{
-                    return 'error'
-                }
-            })
-            return({
-                email : path.email,
-                newPassword : path.newPassword,
-                message :'new password is updated'
-            })
+
+            const saveToUser = await UserData.findOne({ mail: context.email })
+            bcryptpass.hash(path.newpassword, (data) => {
+              if (data) {
+                saveToUser.password = data;
+                saveToUser.save();
+              } else {
+                return new Apollerror.ApolloError('Internal Server Error');
+              }
+            });
+            return ({
+              email: context.email,
+              newpassword: path.newpassword,
+            });
+            
         }
-    }   
+    
+    } 
 
 };
 

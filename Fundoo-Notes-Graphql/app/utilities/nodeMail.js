@@ -1,10 +1,13 @@
 const nodemailer = require('nodemailer')
+const UserData = require('../models/user.model')
+const mailModel = require('../models/mail.model')
 
-var code = null;
+
+//var code =null
 class SendByMail { 
-    getMessageByMail =  () => {
+    getMessageByMail =  (receiver,callback) => {
 
-         code = (Math.random().toString(36).substring(5));
+        var code = (Math.random().toString(36).substring(5));
 
         const transporter = nodemailer.createTransport({
             service : 'gmail',
@@ -16,28 +19,34 @@ class SendByMail {
         
         const mailOptions = {
             from : process.env.Mail,
-            to : 'pavanyalala4508@gmail.com',
+            to : receiver,
             subject : 'Fundoo notes ForgotPassword Link',
             text : code
         };
         
-        transporter.sendMail(mailOptions, function(error, data){
+        transporter.sendMail(mailOptions, async function (error, data) {
+            console.log("Email sent successfully");
             if (error) {
-                console.log(error);
-            }else {
-                console.log('Email sent sucessfully');
+              console.log("Error " + error);
+              return callback("Error", null);
+            } else {
+              const userPresent = await UserData.findOne({ email: receiver });
+              const mailmodel = new mailModel({
+                mail: userPresent.email,
+                tempcode: code
+              })
+              await mailmodel.save();
+              return callback(null, "Email sent successfully")
             }
-        });
+          });
     }
 
-    passCode = (data) => {
-        if(data == code){
-            console.log("Correct code");
-            return true 
-        }else{
-            console.log("Wrong code");
-            return false
+    sendCode = (receiver, user) => {
+        if (receiver === user[0].tempcode) {
+          return 'true'
         }
+        return 'false'
+      
     }
 }
 
