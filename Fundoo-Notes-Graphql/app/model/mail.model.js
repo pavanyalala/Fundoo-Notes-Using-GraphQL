@@ -7,7 +7,7 @@ const mailSchema = mongoose.Schema({
   expireAt: {
     type: Date,
     default: Date.now,
-    index: { expireAfterSeconds: 120 },
+    index: { expireAfterSeconds: 60 },
   },
 });
 

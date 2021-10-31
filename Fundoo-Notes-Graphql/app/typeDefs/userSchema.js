@@ -1,65 +1,63 @@
-const { gql } = require("apollo-server-express");
+const { gql } = require('apollo-server-express');
 
-const typeDefs = gql`
-type User{
-    id        :ID!
-    firstName : String
-    lastName  : String
-    email     : String
-    password  : String
+module.exports =gql(`
+
+type Query{
+    getAllUsers : [User]
 },
 
-type AuthUser{
-    id              : ID
-    firstName       : String
-    lastName        : String
-    email           : String
-    token           : String
-    tokenExpiration : Int!
+type User {
+    id:ID!
+    firstName:String!
+    lastName:String!
+    email:String!
+    password:String!
+},
+type authUser{
+    id:ID!
+    token:String
+    firstName:String
+    lastName:String
+    email:String
+
 },
 
-type Forgot{
-    email   : String!
-    message : String
+type forgot{
+    email:String!
 },
 
-type Reset{
-    email       :String!
-    newPassword :String
-},
+type reset{
+    email:String!
+    newpassword:String
+}
 
 input UserInput{
-    firstName : String!
-    lastName  : String
-    email     : String
-    password  : String
+    firstName:String!
+    lastName:String!
+    email:String!
+    password:String!
 },
 
 input LoginInput{
-    email    : String!
-    password : String
+    email:String!
+    password:String!
 },
 
 input ForgotPassword{
-    email : String!
+    email:String!
 },
 
-input ResetPassword{
-    email        : String!
-    Code         : String
-    newPassword  : String
-}
-
-type Query{
-    getAllUsers : [User] 
+input ResetPassword
+{
+    mailcode:String!
+    newpassword:String!
 },
 
-type Mutation {
-    registerUser( path : UserInput ):User
-    loginUser(path : LoginInput):AuthUser
-    forgotPassword(path : ForgotPassword):Forgot
-    resetPassword(path : ResetPassword):Reset
+type Mutation{
+    registerUser( path : UserInput):User
+    loginUser( path : LoginInput):authUser
+    forgotPassword( path : ForgotPassword):forgot
+    resetPassword(path : ResetPassword):reset
 }
-`;
+`)
 
-module.exports = typeDefs;

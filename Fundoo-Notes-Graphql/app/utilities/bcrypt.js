@@ -1,15 +1,20 @@
 const bcrypt = require('bcrypt');
-const salting = 11;
-class bcryptpass{
-       hash = (details, callback) => {
-        bcrypt.hash(details, salting, function (error, hash) {
-            console.log(details)
-            if (error) {
-                return callback(error, null);
+const saltRounds = 10;
+class bcryptPassword {
+    
+    hashpassword = (details, callback) => {
+        try{
+        bcrypt.hash(details, saltRounds, function (err, hash) {
+            if (err) {
+                return callback(err, null);
             } else {
                 return callback(null, hash);
             }
         })
     }
+    catch (error) {
+        return callback(error,null)
+    }
 }
-module.exports = new bcryptpass()
+}
+module.exports = new bcryptPassword()
