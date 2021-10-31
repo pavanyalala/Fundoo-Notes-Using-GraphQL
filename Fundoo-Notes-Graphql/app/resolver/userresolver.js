@@ -99,7 +99,7 @@ const reslover ={
             if(!checkinguser){
                 return new ApolloError.AuthenticationError('user id does not exist')
             }
-            const checkingcode = sendinfobymail.passcode(path.code)
+            const checkingcode = sendinfobymail.sendCode(path.code)
             if(checkingcode === 'false'){
                 return new ApolloError.AuthenticationError('wrong code enter valid code')
             }

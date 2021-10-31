@@ -49,6 +49,7 @@ input ForgotPassword{
 
 input ResetPassword
 {
+    email : String!
     mailcode:String!
     newpassword:String!
 },
