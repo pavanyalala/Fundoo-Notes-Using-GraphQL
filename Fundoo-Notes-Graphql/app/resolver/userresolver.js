@@ -10,7 +10,7 @@ const mailModel = require('../model/mail.model');
 const sendinfobymail = require('../utilities/sendinfobymail');
 
 
-const reslover ={
+const reslovers ={
     Query : {
         
         getAllUsers : async () => {
@@ -122,4 +122,4 @@ const reslover ={
 }
         
       
-module.exports = reslover;
+module.exports = reslovers;
