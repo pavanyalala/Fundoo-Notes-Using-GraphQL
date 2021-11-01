@@ -44,7 +44,7 @@ class sendinfobymail {
     }
 }
 
-sendCode = (details, user) => {
+passCode = (details, user) => {
   if (details === user[0].tempcode) {
     return 'true'
     }
