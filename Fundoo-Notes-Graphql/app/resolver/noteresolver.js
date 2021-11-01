@@ -43,6 +43,16 @@ const noteresolvers = {
            return note
         },
 
+        deleteNote: async(_,args)=>{
+
+            const { id } = args
+    
+            await noteModel.findByIdAndDelete(id)
+    
+            return 'notes deleted successfully'
+    
+        }
+
     }
 }
 

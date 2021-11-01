@@ -76,9 +76,7 @@ type Mutation{
 
     createNote(post : postInput):Post
     editNote(id:ID, post : postInput):Post
-
-
-
+    deleteNote(id:ID):String
 
 }
 `)
