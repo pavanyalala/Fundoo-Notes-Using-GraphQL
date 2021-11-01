@@ -10,7 +10,7 @@ const noteresolvers = {
         },  
 
         getNotes: async(_,{id})=>{
-           return await Note.findById(id);
+           return await noteModel.findById(id);
         }
     },
 
@@ -30,7 +30,18 @@ const noteresolvers = {
             }
             await notes.save();
             return notes
-        }
+        },
+
+        editNote: async(_,args)=>{
+
+            const {id} =args
+
+           const {title, description} =args.post
+
+           const note = await noteModel.findByIdAndUpdate(id,{title,description},{new :true})
+
+           return note
+        },
 
     }
 }

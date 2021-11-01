@@ -75,6 +75,8 @@ type Mutation{
     resetPassword(path : ResetPassword):reset
 
     createNote(post : postInput):Post
+    editNote(id:ID, post : postInput):Post
+
 
 
 
