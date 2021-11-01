@@ -4,6 +4,8 @@ module.exports =gql(`
 
 type Query{
     getAllUsers : [User]
+    getAllNotes : [Post]
+    getNotes(id : ID) : Post
 },
 
 type User {
@@ -29,7 +31,13 @@ type forgot{
 type reset{
     email:String!
     newpassword:String
-}
+},
+
+type Post{
+    title:String!
+    description:String
+},
+
 
 input UserInput{
     firstName:String!
@@ -54,11 +62,22 @@ input ResetPassword
     newpassword:String!
 },
 
+input postInput{
+    title:String!
+    description:String
+    email:String
+},
+
 type Mutation{
     registerUser( path : UserInput):User
     loginUser( path : LoginInput):authUser
     forgotPassword( path : ForgotPassword):forgot
     resetPassword(path : ResetPassword):reset
+
+    createNote(post : postInput):Post
+
+
+
 }
 `)
 

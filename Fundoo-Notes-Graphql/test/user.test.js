@@ -77,7 +77,6 @@ describe("Mutations", () => {
           firstName
           lastName
           email
-          password
         }
         }
       `;
