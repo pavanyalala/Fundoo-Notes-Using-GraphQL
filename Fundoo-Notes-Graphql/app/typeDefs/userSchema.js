@@ -6,6 +6,7 @@ type Query{
     getAllUsers : [User]
     getAllNotes : [Post]
     getNotes(id : ID) : Post
+    getLabel:[GetLabels]
 },
 
 type User {
@@ -38,6 +39,17 @@ type Post{
     description:String
 },
 
+type GetLabels
+{
+    _id:ID
+    userId:String
+    noteId:[String]
+    labelName:String
+}
+
+type Label{
+    labelname:String!
+},
 
 input UserInput{
     firstName:String!
@@ -68,6 +80,11 @@ input postInput{
     email:String
 },
 
+input LabelInput{
+    noteID:ID!
+    labelname:String!
+}
+
 type Mutation{
     registerUser( path : UserInput):User
     loginUser( path : LoginInput):authUser
@@ -77,6 +94,9 @@ type Mutation{
     createNote(post : postInput):Post
     editNote(id:ID, post : postInput):Post
     deleteNote(id:ID):String
+
+    createLabel(path:LabelInput):Label
+    
 
 }
 `)

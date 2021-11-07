@@ -12,7 +12,7 @@ dbconfig.dbConnection();
 //async function startServer(){
     
      const apolloServer = new ApolloServer({
-         typeDefs,
+         typeDefs ,
          resolvers,
      });
     const app = express()
