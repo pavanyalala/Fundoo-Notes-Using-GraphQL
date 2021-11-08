@@ -44,6 +44,21 @@
         noteId:String!
     }
 
+    input LabelInput
+    {
+        noteID:ID!
+        labelname:String!
+    }
+    type Label
+    {
+        labelname:String
+    }
+
+     input DeleteLabelInput
+    {
+        labelname:String!
+    }
+
     type Query{
         getAllUsers:[User!]!
         notes:[Note!]!
@@ -56,4 +71,7 @@
         createNote(post : NoteInput):Note
         editNote(post : NoteEdit):Note
         deleteNote(post : DeleteNote):Note
+
+        createLabel(path : LabelInput):String
+        deleteLabel(path : DeleteLabelInput):String
     }

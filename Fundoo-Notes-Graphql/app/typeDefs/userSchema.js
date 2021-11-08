@@ -108,10 +108,6 @@ type Mutation{
 
     createLabel(path:LabelInput):String
     deleteLabel(path:DeleteLabelInput):String
-
-    
-    
-
 }
 `)
 
