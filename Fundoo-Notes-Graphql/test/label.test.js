@@ -80,6 +80,37 @@ describe("Mutations", () => {
         });
     });
 
-
+    //deleteLabel Mutation Test Cases
+    test("Given_deleteLabel_MutationShouldPass_IfTheFirstArgIsFalse_AndTheInputIsEmpty", () => {
+        const mutation = `
+    mutation deleteLabel($path: DeleteLabelInput) {
+      deleteLabel(path: ) 
+    }
+  `;
+       
+        tester.test(false, mutation, {});
+    });
+    test("Given_deleteLabel_MutationShouldPass_IfTheFirstArg_IsFalse_And_TheInputHasInvalidField", () => {
+        const mutation = `
+        mutation deleteLabel($path: InvalidInput) {
+            deleteLabel(path: $path) 
+          }
+        `;
+        tester.test(false, mutation, [
+            {
+                String
+            }
+        ]);
+    });
+    test("Given_deleteLabel_MutationShouldPass_IfTheFirstArgIsTrue_And_TheInputIsValid", () => {
+        const mutation = `
+        mutation deleteLabel($path: DeleteLabelInput) {
+            deleteLabel(path: $path) 
+          }
+        `;
+        tester.test(true, mutation, {
+            deleteLabel: "Deleted Sucessfully"
+        });
+    });
     
 })
