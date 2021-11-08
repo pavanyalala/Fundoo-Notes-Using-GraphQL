@@ -1,54 +1,47 @@
 const labelModel = require('../model/label.model')
 const Apolloerror = require('apollo-server-errors')
 
-const labelResolvers = {
-
-    Query:{
-        getLabel: async () => {
+const labelresolvers = {
+    Query : {
+        getLabel : async () => {
             const labels = await labelModel.find()
             return labels
         }
-        
     },
-
-    Mutation:{
-        createLabel: async (_,{path},context) =>{
-            const checkNote = await labelModel.findOne({noteId: path.noteID})
-
-            if(checkNote){
-
-                return new Apolloerror.UserInputError('note is already exist ')
-                
-            }
-            const checkinglabel = await labelModel.findOne({labelName:path.labelname})
-
-            if(checkinglabel){
-
-                checkinglabel.noteId.push(path.noteID)
-
-                await checkinglabel.save();
-                return({
-
-                    labelname:path.labelname,
-                })
-            }
-            const labelmodel = new labelModel({
-
-                userId: context.id,
-
-                noteId: path.noteID,
-
-                labelName:path.labelname,
-                
-            });
-
-             
-            await labelmodel.save();
-            return ({
-                labelName: path.labelName
-            })
+    Mutation : {
+        createLabel: async (_, { path },) => {
+           
+                const checkLabel = await labelModel.findOne({ labelName: path.labelname });
+                if (checkLabel) {
+                    for (index = 0; index < checkLabel.noteId.length; index++) {
+                        if (JSON.stringify(checkLabel.noteId[index]) === JSON.stringify(path.noteID)) {
+                            return new Apolloerror.UserInputError('This note is already added');
+                        }
+                    }
+                    checkLabel.noteId.push(path.noteID)
+                    await checkLabel.save();
+                    return "Note Pushed Into Existing Label Sucessfully"
+                }
+                const labelmodel = new labelModel({
+                    noteId: path.noteID,
+                    labelName: path.labelname,
+                });
+                await labelmodel.save();
+                return "New Label Created Sucessfully"
         },
+
+        deleteLabel: async (_, { path }, context) => {
+           
+                const checkLabel = await labelModel.findOne({ labelName: path.labelname });
+                if (!checkLabel) {
+                    return new Apolloerror.UserInputError('Label is not present');
+                }
+                await labelModel.findByIdAndDelete(checkLabel.id);
+                return "Deleted Sucessfully"
+           
+        },
+
     }
-    
 }
-module.exports = labelResolvers;
+
+module.exports = labelresolvers;

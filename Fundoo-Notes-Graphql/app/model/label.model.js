@@ -8,7 +8,7 @@ const labelSchema = mongoose.Schema({
     noteId: {
         type: [{
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'noteModel'
+            ref: 'Notes'
         }]
     },
 
