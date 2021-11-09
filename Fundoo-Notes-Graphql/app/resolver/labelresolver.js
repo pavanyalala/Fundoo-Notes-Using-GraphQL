@@ -30,16 +30,15 @@ const labelresolvers = {
                 return "New Label Created Sucessfully"
         },
 
-        deleteLabel: async (_, { path }, context) => {
-           
-                const checkLabel = await labelModel.findOne({ labelName: path.labelname });
-                if (!checkLabel) {
-                    return new Apolloerror.UserInputError('Label is not present');
-                }
-                await labelModel.findByIdAndDelete(checkLabel.id);
-                return "Deleted Sucessfully"
-           
-        },
+        deleteLabel: async(_,args)=>{
+
+            const { id } = args
+    
+            await labelModel.findByIdAndDelete(id)
+    
+            return 'Label deleted successfully'
+    
+        }
 
     }
 }

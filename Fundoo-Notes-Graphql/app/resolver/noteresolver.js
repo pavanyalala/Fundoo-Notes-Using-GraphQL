@@ -30,7 +30,7 @@ const noteresolvers = {
             }
             await notes.save();
             return notes
-        },
+        }, 
 
         editNote: async(_,args)=>{
 

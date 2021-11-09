@@ -107,7 +107,7 @@ type Mutation{
     deleteNote(id:ID):String
 
     createLabel(path:LabelInput):String
-    deleteLabel(path:DeleteLabelInput):String
+    deleteLabel(id:ID):String
 }
 `)
 
