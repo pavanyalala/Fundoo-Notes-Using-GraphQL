@@ -3,10 +3,14 @@ const Apolloerror = require('apollo-server-errors')
 
 const labelresolvers = {
     Query : {
-        getLabel : async () => {
+        getAllLabel : async () => {
             const labels = await labelModel.find()
             return labels
-        }
+        },
+        getLabel: async(_,{id})=>{
+            const label = await labelModel.findById(id);
+            return label
+         }
     },
     Mutation : {
         createLabel: async (_, { path },) => {
@@ -38,7 +42,18 @@ const labelresolvers = {
     
             return 'Label deleted successfully'
     
-        }
+        },
+
+        editLabel: async(_,args)=>{
+
+            const {id} =args
+
+           const {labelname} =args.path
+
+           const label = await labelModel.findByIdAndUpdate(id,{labelname},{new :true})
+
+           return label
+        }, 
 
     }
 }
