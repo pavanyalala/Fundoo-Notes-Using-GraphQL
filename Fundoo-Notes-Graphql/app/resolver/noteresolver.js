@@ -1,5 +1,6 @@
 const userModel = require('../model/user.model')
 const noteModel = require('../model/note.model')
+const labelModel = require('../model/label.model')
 
 const noteresolvers = {
 
@@ -51,7 +52,23 @@ const noteresolvers = {
     
             return 'notes deleted successfully'
     
-        }
+        },
+
+        AddLabel: async (_, { path },) => {
+           
+            const checkLabel = await labelModel.findOne({ labelName: path.labelname });
+            if (checkLabel) {
+                checkLabel.noteId.push(path.noteID)
+                await checkLabel.save();
+                return "Note Pushed Into Existing Label Sucessfully"
+            }
+            const labelmodel = new labelModel({
+                noteId: path.noteID,
+                labelName: path.labelname,
+            });
+            await labelmodel.save();
+            return "New Label Created Sucessfully"
+    },
 
     }
 }

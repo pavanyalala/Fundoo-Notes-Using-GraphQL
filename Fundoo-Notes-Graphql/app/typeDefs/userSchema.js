@@ -90,6 +90,11 @@ input DeleteLabelInput{
 input editLabelInput{
     labelname:String!
 }
+input addLabelInput{
+    id:ID
+    noteID:String
+    labeID:String
+}
     
 
 type Mutation{
@@ -101,6 +106,7 @@ type Mutation{
     createNote(post : postInput):Post
     editNote(id:ID, post : postInput):Post
     deleteNote(id:ID):String
+    AddLabel(path:LabelInput):String
 
     createLabel(path:LabelInput):String
     deleteLabel(id:ID):String
