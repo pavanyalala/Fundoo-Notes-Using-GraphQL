@@ -55,20 +55,24 @@ const noteresolvers = {
         },
 
         AddLabel: async (_, { path },) => {
-           
-            const checkLabel = await labelModel.findOne({ labelName: path.labelname });
-            if (checkLabel) {
-                checkLabel.noteId.push(path.noteID)
-                await checkLabel.save();
-                return "Note Pushed Into Existing Label Sucessfully"
-            }
+    
             const labelmodel = new labelModel({
                 noteId: path.noteID,
                 labelName: path.labelname,
             });
             await labelmodel.save();
-            return "New Label Created Sucessfully"
-    },
+            return "Label Added to note "
+        },
+
+        DeleteLabel: async(_,args)=>{
+
+            const { id } = args
+    
+            await labelModel.findByIdAndDelete(id)
+    
+            return 'Label deleted successfully'
+    
+        },
 
     }
 }

@@ -107,6 +107,7 @@ type Mutation{
     editNote(id:ID, post : postInput):Post
     deleteNote(id:ID):String
     AddLabel(path:LabelInput):String
+    DeleteLabel(id:ID):String
 
     createLabel(path:LabelInput):String
     deleteLabel(id:ID):String
