@@ -5,12 +5,6 @@ const labelSchema = mongoose.Schema({
         ref: 'userModel'
     },
 
-    noteId: {
-        type: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Notes'
-        }]
-    },
 
     labelName: {
         type: String,

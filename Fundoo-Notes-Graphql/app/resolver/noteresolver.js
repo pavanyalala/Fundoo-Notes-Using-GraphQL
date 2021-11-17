@@ -54,27 +54,32 @@ const noteresolvers = {
     
         },
 
-        AddLabel: async (_, { path },) => {
-    
-            const labelmodel = new labelModel({
-                noteId: path.noteID,
-                labelName: path.labelname,
-            });
-            await labelmodel.save();
-            return "Label Added to note "
-        },
+        saveLabelToNote: async (_,params) =>{
+            //find labelID from noteModel Schema
+        let id = await noteModel.find({ labelID: params.label_ID })
 
-        DeleteLabel: async(_,args)=>{
+        //if id is already present
+        if (id.length > 0) {
+            return { message: "This label is not present in notes" }
+        }
 
-            const { id } = args
-    
-            await labelModel.findByIdAndDelete(id)
-    
-            return 'Label deleted successfully'
-    
-        },
+        //find id from noteModel and update(push) into notes
+        let note = await noteModel.findOneAndUpdate({ _id: params.noteID },
+            {
+                $push: {
+                    labelID: params.label_ID
+                }
 
-    }
+            })
+            if (!note) {
+                return { message: "label not added " }
+            } else {
+                return { message: "label added on note successfully " }
+            }
+        }
+
+
+     }
 }
 
 module.exports = noteresolvers;

@@ -15,14 +15,9 @@ const labelresolvers = {
     Mutation : {
         createLabel: async (_, { path },) => {
            
-                const checkLabel = await labelModel.findOne({ labelName: path.labelname });
-                if (checkLabel) {
-                    checkLabel.noteId.push(path.noteID)
-                    await checkLabel.save();
-                    return "Note Pushed Into Existing Label Sucessfully"
-                }
+               
                 const labelmodel = new labelModel({
-                    noteId: path.noteID,
+                    
                     labelName: path.labelname,
                 });
                 await labelmodel.save();

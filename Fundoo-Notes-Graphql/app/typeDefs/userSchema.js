@@ -38,6 +38,8 @@ type reset{
 type Post{
     title:String!
     description:String
+    message:String
+    
 },
 
 type GetLabels{
@@ -48,6 +50,7 @@ type GetLabels{
 type Label{
     labelname:String
 },
+
 
 input UserInput{
     firstName:String!
@@ -79,7 +82,6 @@ input postInput{
 },
 
 input LabelInput{
-    noteID:ID
     labelname:String!
 },
 
@@ -106,8 +108,7 @@ type Mutation{
     createNote(post : postInput):Post
     editNote(id:ID, post : postInput):Post
     deleteNote(id:ID):String
-    AddLabel(path:LabelInput):String
-    DeleteLabel(id:ID):String
+    saveLabelToNote(noteID: ID!, label_ID: ID!): Post
 
     createLabel(path:LabelInput):String
     deleteLabel(id:ID):String
