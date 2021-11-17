@@ -1,6 +1,7 @@
 const userModel = require('../model/user.model')
 const noteModel = require('../model/note.model')
 const labelModel = require('../model/label.model')
+const { listeners } = require('../model/note.model')
 
 const noteresolvers = {
 
@@ -76,6 +77,23 @@ const noteresolvers = {
             } else {
                 return { message: "label added on note successfully " }
             }
+        },
+        deleteLabelToNote: async (_,params) =>{
+            //find labelID from noteModel Schema
+        let id = await noteModel.find({ labelID: params.label_ID })
+
+        if (!id.length > 0) {
+            return { message: "This label is not present in notes" }
+        }
+        let note = await noteModel.findOneAndUpdate({ _id: params.noteID },
+            {
+                $pull: {
+                    labelID: params.label_ID
+                }
+
+            })
+
+            return { message: "label delete from note successfully " }
         }
 
 
