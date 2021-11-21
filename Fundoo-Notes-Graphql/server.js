@@ -4,6 +4,7 @@ const { ApolloServer} = require('apollo-server-express');
 const typeDefs = require('./app/typedefs/userschema');
  const resolvers = require('./app/resolver/index');
 const dbconfig = require('./config/db.config')
+const auth = require('./app/utilities/auth')
 
 require('dotenv').config();
 
@@ -14,6 +15,7 @@ dbconfig.dbConnection();
      const apolloServer = new ApolloServer({
          typeDefs ,
          resolvers,
+         context : auth
      });
     const app = express()
 
