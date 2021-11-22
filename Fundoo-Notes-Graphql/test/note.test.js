@@ -71,6 +71,7 @@ describe("Query", () => {
               createNote(post: $post) {
                 title
                 description
+                userId
               }
             }
           `;
@@ -78,7 +79,8 @@ describe("Query", () => {
       tester.test(false, mutation, [
         {
           title: "Book1",
-          description: "Book Description"
+          description: "Book Description",
+          userId:"619bce422171e302b6730d66"
         }
       ]);
     });
@@ -88,13 +90,14 @@ describe("Query", () => {
               createNote(post: $post) {
                 title
                 description
+                
               }
             }
           `;
      
       tester.test(true, mutation, {
-        title: "Book1",
-        description: "Book Description"
+        title: "Note1",
+        description: "Note1 Description",
       });
     });
   

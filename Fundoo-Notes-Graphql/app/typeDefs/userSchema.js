@@ -78,6 +78,7 @@ input ResetPassword
 input postInput{
     title:String!
     description:String
+    userId:String
     
 },
 

@@ -22,6 +22,7 @@ const noteresolvers = {
                 return new ApolloError.AuthenticationError('UnAuthenticated');
 
             }
+            
            return await noteModel.findById(id);
         }
     },
@@ -86,7 +87,7 @@ const noteresolvers = {
             //find labelID from noteModel Schema
         let id = await noteModel.find({ labelID: params.label_ID })
         //if id is already present
-        if (id.length > 0) {
+        if (!id.length > 0) {
             
             return { message: "This label is  present in notes" }
         }

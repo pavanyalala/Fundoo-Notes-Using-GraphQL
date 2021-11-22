@@ -76,7 +76,8 @@ describe("Mutations", () => {
           }
         `;
         tester.test(true, mutation, {
-            createLabel: "New Label Created Sucessfully"
+            createLabel: "New Label Created Sucessfully",
+            userId:"619b4b5c95890cf8caa3e96e"
         });
     });
 
