@@ -84,10 +84,8 @@ const noteresolvers = {
             }
             //find labelID from noteModel Schema
         let id = await noteModel.find({ labelID: params.label_ID })
-        console.log(id);
-
         //if id is already present
-        if (id.length > 0) {
+        if (!id.length > 0) {
             
             return { message: "This label is  present in notes" }
         }
@@ -96,7 +94,7 @@ const noteresolvers = {
         //find id from noteModel and update(push) into notes
         let note = await noteModel.findOneAndUpdate({ _id: params.noteID },
             {
-                $push: {
+                $addToSet: {
                     labelID: params.label_ID
                 }
 
