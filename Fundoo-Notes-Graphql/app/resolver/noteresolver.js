@@ -9,11 +9,19 @@ const noteresolvers = {
 
     Query : {
 
-        getAllNotes: async ()=>{
+        getAllNotes: async (_,{ },context)=>{
+            if(!context.id){
+                return new ApolloError.AuthenticationError('UnAuthenticated');
+
+            }
            return await noteModel.find()
         },  
 
-        getNotes: async(_,{id})=>{
+        getNotes: async(_,{id},context)=>{
+            if(!context.id){
+                return new ApolloError.AuthenticationError('UnAuthenticated');
+
+            }
            return await noteModel.findById(id);
         }
     },
@@ -27,7 +35,7 @@ const noteresolvers = {
 
             }
 
-            const existingUser = await userModel.findOne({ email: context.email }); 
+            const existingUser = await userModel.findOne({ email: post.email }); 
             const notes =  new noteModel({
 
                 title : post.title,
@@ -41,7 +49,10 @@ const noteresolvers = {
             return notes
         }, 
 
-        editNote: async(_,args)=>{
+        editNote: async(_,args,context)=>{
+            if(!context.id){
+                return new ApolloError.AuthenticationError('UnAuthenticated');
+            }
 
             const {id} =args
 
@@ -52,7 +63,11 @@ const noteresolvers = {
            return note
         },
 
-        deleteNote: async(_,args)=>{
+        deleteNote: async(_,args,context)=>{
+            if(!context.id){
+                return new ApolloError.AuthenticationError('UnAuthenticated');
+
+            }
 
             const { id } = args
     
@@ -62,7 +77,11 @@ const noteresolvers = {
     
         },
 
-        saveLabelToNote: async (_,params) =>{
+        saveLabelToNote: async (_,params,context) =>{
+            if(!context.id){
+                return new ApolloError.AuthenticationError('UnAuthenticated');
+
+            }
             //find labelID from noteModel Schema
         let id = await noteModel.find({ labelID: params.label_ID })
         console.log(id);
@@ -88,7 +107,12 @@ const noteresolvers = {
                 return { message: "label added on note successfully " }
             }
         },
-        deleteLabelToNote: async (_,params) =>{
+        deleteLabelToNote: async (_,params,context) =>{
+
+            if(!context.id){
+                return new ApolloError.AuthenticationError('UnAuthenticated');
+
+            }
             //find labelID from noteModel Schema
         let id = await noteModel.find({ labelID: params.label_ID })
 
