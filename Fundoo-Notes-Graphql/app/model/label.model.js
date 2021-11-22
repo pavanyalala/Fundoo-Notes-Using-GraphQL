@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const labelSchema = mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'userModel'
+        ref: 'userModel',
+        required: [true, 'User id required'],
     },
 
 
@@ -15,4 +16,4 @@ const labelSchema = mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('labelModel', labelSchema);
+module.exports = mongoose.model('label', labelSchema);

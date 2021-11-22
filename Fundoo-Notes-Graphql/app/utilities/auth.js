@@ -5,9 +5,8 @@ module.exports = ({ req }) => {
     try {
         if (!token) {
             return req=false;
-        }
-            let decodedToken;   
-            decodedToken=jwt.verify(token, process.env.accessToken)       
+        }   
+            let decodedToken=jwt.verify(token, process.env.accessToken)       
             return decodedToken;
         }
     

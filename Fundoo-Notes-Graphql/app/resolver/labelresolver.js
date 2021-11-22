@@ -19,7 +19,7 @@ const labelresolvers = {
 
             }
                 const labelmodel = new labelModel({
-                    
+                    userId: context.id,
                     labelName: path.labelname,
                 });
                 await labelmodel.save();
