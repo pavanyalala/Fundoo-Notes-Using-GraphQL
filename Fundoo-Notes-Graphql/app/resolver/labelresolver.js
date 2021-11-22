@@ -13,9 +13,11 @@ const labelresolvers = {
          }
     },
     Mutation : {
-        createLabel: async (_, { path },) => {
-           
-               
+        createLabel: async (_, { path },context) => {
+            if(!context.id){
+                return new Apolloerror.AuthenticationError('UnAuthenticated');
+
+            }
                 const labelmodel = new labelModel({
                     
                     labelName: path.labelname,
@@ -25,6 +27,10 @@ const labelresolvers = {
         },
 
         deleteLabel: async(_,args)=>{
+            if(!context.id){
+                return new ApolloError.AuthenticationError('UnAuthenticated');
+
+            }
 
             const { id } = args
     
@@ -35,6 +41,10 @@ const labelresolvers = {
         },
 
         editLabel: async(_,args)=>{
+            if(!context.id){
+                return new ApolloError.AuthenticationError('UnAuthenticated');
+
+            }
 
             const {id} =args
 
