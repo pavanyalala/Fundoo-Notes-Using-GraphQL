@@ -9,12 +9,12 @@ const noteresolvers = {
 
     Query : {
 
-        getAllNotes: async (_,{ },context)=>{
+        getAllNotes: async (_,{userId},context)=>{
             if(!context.id){
                 return new ApolloError.AuthenticationError('UnAuthenticated');
 
             }
-           return await noteModel.find()
+           return await noteModel.find(userId)
         },  
 
         getNotes: async(_,{id},context)=>{
@@ -85,9 +85,12 @@ const noteresolvers = {
 
             }
             //find labelID from noteModel Schema
-        let id = await noteModel.find({ labelID: params.label_ID })
+        let id = await noteModel.find({ labelID:params.label_ID,})
+        console.log(id)
+        // let _id = await userModel.findById()
+        // console.log(_id)
         //if id is already present
-        if (!id.length > 0) {
+        if (id.length > 0) {
             
             return { message: "This label is  present in notes" }
         }

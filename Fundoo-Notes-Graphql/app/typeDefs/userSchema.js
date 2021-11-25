@@ -4,7 +4,7 @@ module.exports =gql(`
 
 type Query{
     getAllUsers : [User]
-    getAllNotes : [Post]
+    getAllNotes(userId : ID) : [Post]
     getNotes(id : ID) : Post
     getAllLabel : [GetLabels]
     getLabel(id : ID) : GetLabels
@@ -39,6 +39,7 @@ type Post{
     title:String!
     description:String
     message:String
+    userId:String!
     
 },
 
@@ -110,7 +111,7 @@ type Mutation{
     editNote(id:ID, post : postInput):Post
     deleteNote(id:ID):String
     saveLabelToNote(noteID: ID!, label_ID: ID!): Post
-    deleteLabelToNote(noteID: ID!, label_ID: ID!): Post
+    deleteLabelToNote(noteID: ID!, user_ID: ID!): Post
 
     createLabel(path:LabelInput):String
     deleteLabel(id:ID):String

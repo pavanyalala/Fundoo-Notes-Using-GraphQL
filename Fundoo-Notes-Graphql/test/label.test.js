@@ -2,7 +2,7 @@ const EasyGraphQLTester = require('easygraphql-tester')
 const fs = require('fs')
 const path = require('path')
 
-const resolvers = require('../app/resolver/labelresolver')
+
 const userSchema = fs.readFileSync(
     path.join(__dirname, ".", "schema.gql"),
     "utf8"
