@@ -8,6 +8,15 @@ const auth = require('./app/utilities/auth')
 
 require('dotenv').config();
 
+const client = require('./config/redis.config');
+
+client.SET("foo","Bar")
+
+client.GET('foo',(err, value) => {
+    if(err) console.log(err.message)
+    console.log.log(value);
+})
+
 dbconfig.dbConnection();
 
 //async function startServer(){
@@ -29,5 +38,6 @@ dbconfig.dbConnection();
 
    
     app.listen(process.env.Port, () => console.log('server is running '))
+
 //}
 //startServer();

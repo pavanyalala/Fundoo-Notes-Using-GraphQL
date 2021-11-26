@@ -80,18 +80,26 @@ const noteresolvers = {
         },
 
         saveLabelToNote: async (_,params,context) =>{
+            try {
             if(!context.id){
                 return new ApolloError.AuthenticationError('UnAuthenticated');
 
             }
             //find labelID from noteModel Schema
-        let id = await noteModel.find({ labelID:params.label_ID,})
+        // let id = await noteModel.find({ labelID:params.label_ID})
+        // console.log(id)
+        
+        // if (id.length > 0) {
+            
+        //     return { message: "This label is  present in notes" }
+        // }
+        let id = await labelModel.find({userID:params.user_ID})
         console.log(id)
         // let _id = await userModel.findById()
         // console.log(_id)
         //if id is already present
-        if (id.length > 0) {
-            
+        if (!id.length > 0) {
+             
             return { message: "This label is  present in notes" }
         }
        
@@ -109,6 +117,11 @@ const noteresolvers = {
             } else {
                 return { message: "label added on note successfully " }
             }
+        }
+        catch (error) {
+            console.log(error);
+            return new ApolloError.ApolloError('Internal Server Error');
+        }
         },
         deleteLabelToNote: async (_,params,context) =>{
 

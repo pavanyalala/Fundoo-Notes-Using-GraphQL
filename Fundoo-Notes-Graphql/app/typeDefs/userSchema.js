@@ -110,8 +110,8 @@ type Mutation{
     createNote(post : postInput):Post
     editNote(id:ID, post : postInput):Post
     deleteNote(id:ID):String
-    saveLabelToNote(noteID: ID!, label_ID: ID!): Post
-    deleteLabelToNote(noteID: ID!, user_ID: ID!): Post
+    saveLabelToNote(noteID: ID!, label_ID: ID!,user_ID:ID!): Post
+    deleteLabelToNote(noteID: ID!, label_ID: ID!): Post
 
     createLabel(path:LabelInput):String
     deleteLabel(id:ID):String
