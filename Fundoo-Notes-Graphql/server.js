@@ -10,12 +10,9 @@ require('dotenv').config();
 
 const client = require('./config/redis.config');
 
-client.SET("foo","Bar")
 
-client.GET('foo',(err, value) => {
-    if(err) console.log(err.message)
-    console.log.log(value);
-})
+
+
 
 dbconfig.dbConnection();
 
@@ -23,7 +20,7 @@ dbconfig.dbConnection();
     
      const apolloServer = new ApolloServer({
          typeDefs ,
-         resolvers,
+         resolvers, 
          context : auth
      });
     const app = express()

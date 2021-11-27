@@ -1,29 +1,23 @@
-const redis = require('redis')
-
+const redis = require("async-redis");
 const client = redis.createClient({
-    port: 6379,
-    host: "127.0.0.1"
-
+    host: '127.0.0.1',
+    port: 6379
 })
 
-client.on('connect', () => {
-    console.log("client connected to redis....")
-})
+/**
+ * @param{} create a empty function and export
+ * @retutn connectivity
+ * @exports function{}
+ */
+module.exports = function () {
 
-client.on('ready', () => {
-    console.log("client connected to redis and ready to use ....")
-})
+    client.on('connect', function () {
+        
+        console.log('connected with redis');
+      
+    });
 
-client.on('error', (err) =>{
-    console.log(err.message)
-})
-
-client.on('end', () => {
-    console.log("client disconnected from redis....")
-})
-
-process.on('SIGINT', () => {
-    client.quit()
-})
-
-module.exports = client;
+    client.on('error', function (err) {
+        console.log('Something went wrong ' + err); 
+    });
+};
